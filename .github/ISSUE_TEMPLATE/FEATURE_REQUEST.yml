@@ -1,0 +1,48 @@
+name: Feature Request
+description: Propose a new feature for the Laravel Open Tibia project
+title: "[Feature]: "
+labels: ["feature"]
+
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: By submitting this feature request, you agree to the following.
+      options:
+        - label: There is no existing issue for this feature (or similar) already
+          required: true
+
+  - type: textarea
+    id: pr
+    attributes:
+      label: Pull Requests or Links
+      description: |
+        Link any PRs or external resources related to this feature. Delete if none.
+      placeholder: |
+        - #pr1
+        - link to Wiki/Forum/other
+      value: |
+        - #
+        - link to Wiki/Forum/other
+
+  - type: textarea
+    id: request
+    attributes:
+      label: Feature Request
+      description: Describe what you want to achieve and why it's needed.
+      value: |
+        **What do you want to achieve?**
+
+        **Code if any:**
+        ```php
+        // Paste your code here
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Possible Solutions
+      description: Suggest possible solutions or implementation ideas.
+      placeholder: Include code snippets or ideas.
