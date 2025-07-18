@@ -21,3 +21,18 @@ if (! function_exists('account')) {
         return auth()->user()->account;
     }
 }
+
+/**
+ * Get the amount of experience needed for a specific level
+ *
+ * @param  int  $level  The level to calculate experience for
+ * @return int The amount of experience needed for the level
+ */
+if (! function_exists('experience_for_level')) {
+    function experience_for_level($level)
+    {
+        $level = $level - 1;
+
+        return (50 * $level * $level * $level - 150 * $level * $level + 400 * $level) / 3;
+    }
+}
