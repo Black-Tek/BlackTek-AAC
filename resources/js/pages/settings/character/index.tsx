@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Plus } from 'lucide-react';
-import { route } from 'ziggy-js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

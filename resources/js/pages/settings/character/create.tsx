@@ -13,7 +13,6 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { ArrowLeft, LoaderCircle } from 'lucide-react';
-import { route } from 'ziggy-js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
