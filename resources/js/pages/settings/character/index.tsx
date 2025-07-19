@@ -11,7 +11,7 @@ import { Plus } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Character settings',
+        title: 'Character',
         href: '/settings/character',
     },
 ];
@@ -19,7 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function CharacterPage({ characters }: { characters: Character[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Character settings" />
+            <Head title="Character" />
 
             <SettingsLayout>
                 <div className="space-y-6">

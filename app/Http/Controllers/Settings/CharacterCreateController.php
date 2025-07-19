@@ -7,7 +7,6 @@ use App\Http\Requests\Settings\CharacterCreateRequest;
 use App\Models\Player;
 use App\Services\PlayerValidationService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,11 +19,10 @@ class CharacterCreateController extends Controller
     /**
      * Show the character creation form.
      */
-    public function create(Request $request): Response
+    public function create(): Response
     {
         $account = account();
 
-        // Verificar si ya tiene el máximo de personajes permitidos
         $maxCharacters = config('blacktek.characters.max_per_account', 7);
 
         return Inertia::render('settings/character/create', [
@@ -46,8 +44,10 @@ class CharacterCreateController extends Controller
 
         $maxCharacters = config('blacktek.characters.max_per_account', 7);
         if ($account->players()->count() >= $maxCharacters) {
-            return redirect()->route('character.index')
-                ->with('error', 'You have reached the maximum number of characters allowed.');
+            return to_route('character.index')
+                ->with('flash', [
+                    'error' => 'You have reached the maximum number of characters allowed.',
+                ]);
         }
 
         $validated = $request->validated();
@@ -62,6 +62,8 @@ class CharacterCreateController extends Controller
             ...Player::getNewPlayerDefaults(),
         ]);
 
-        return redirect()->route('character.index');
+        return to_route('character.index')->with('flash', [
+            'success' => 'Character created successfully.',
+        ]);
     }
 }

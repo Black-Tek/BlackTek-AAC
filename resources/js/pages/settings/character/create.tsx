@@ -9,18 +9,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { ArrowLeft, LoaderCircle } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Character settings',
+        title: 'Character',
         href: '/settings/character',
     },
     {
-        title: 'Create character',
+        title: 'Create Character',
         href: '/settings/character/create',
     },
 ];
@@ -43,7 +42,8 @@ interface TownOption {
 }
 
 interface SexOption {
-    [key: string]: string;
+    id: string;
+    name: string;
 }
 
 interface CharacterCreateProps {
@@ -72,7 +72,7 @@ export default function CharacterCreate({ vocations, towns, sexes, characterCoun
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Create character" />
+            <Head title="Create Character" />
 
             <SettingsLayout>
                 <div className="space-y-6">
@@ -128,18 +128,18 @@ export default function CharacterCreate({ vocations, towns, sexes, characterCoun
                                         {/* Sex Selection */}
                                         <div className="grid gap-2">
                                             <Label>Sex</Label>
-                                            <ToggleGroup
-                                                type="single"
-                                                value={data.sex}
-                                                onValueChange={(value) => value && setData('sex', value)}
-                                                disabled={processing}
-                                            >
-                                                {Object.entries(sexes).map(([key, value]) => (
-                                                    <ToggleGroupItem key={key} value={key} className="capitalize">
-                                                        {value}
-                                                    </ToggleGroupItem>
-                                                ))}
-                                            </ToggleGroup>
+                                            <Select value={data.sex} onValueChange={(value) => setData('sex', value)} disabled={processing}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a sex" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {Object.values(sexes).map((sex) => (
+                                                        <SelectItem key={sex.id} value={sex.id.toString()}>
+                                                            {sex.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                             <InputError message={errors.sex} />
                                         </div>
 
@@ -159,9 +159,6 @@ export default function CharacterCreate({ vocations, towns, sexes, characterCoun
                                                 </SelectContent>
                                             </Select>
                                             <InputError message={errors.vocation} />
-                                            <p className="text-sm text-muted-foreground">
-                                                Your character's profession. This determines your abilities and playstyle.
-                                            </p>
                                         </div>
 
                                         {/* Town Selection */}
@@ -180,7 +177,6 @@ export default function CharacterCreate({ vocations, towns, sexes, characterCoun
                                                 </SelectContent>
                                             </Select>
                                             <InputError message={errors.town_id} />
-                                            <p className="text-sm text-muted-foreground">The town where your character will start their adventure.</p>
                                         </div>
                                     </div>
 

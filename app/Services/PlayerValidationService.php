@@ -13,18 +13,11 @@ class PlayerValidationService
     {
         $availableVocations = app('vocations')->getVocations();
         $allowedVocations = config('blacktek.characters.new.vocations');
-        $vocations = [];
 
-        foreach ($availableVocations as $vocation) {
-            if (in_array($vocation->name, $allowedVocations)) {
-                $vocations[$vocation->id] = [
-                    'id' => $vocation->id,
-                    'name' => $vocation->name,
-                ];
-            }
-        }
-
-        return $vocations;
+        return collect($availableVocations)
+            ->filter(fn ($vocation) => in_array($vocation->name, $allowedVocations))
+            ->map(fn ($vocation) => ['id' => $vocation->id, 'name' => $vocation->name])
+            ->toArray();
     }
 
     /**
@@ -32,20 +25,13 @@ class PlayerValidationService
      */
     public function getAvailableTowns(): array
     {
-        $availableTowns = Town::getAvailableTowns();
+        $availableTowns = Town::get();
         $allowedTowns = config('blacktek.characters.new.towns');
-        $towns = [];
 
-        foreach ($allowedTowns as $townId => $townName) {
-            if (array_key_exists($townId, $availableTowns)) {
-                $towns[$townId] = [
-                    'id' => $townId,
-                    'name' => $townName,
-                ];
-            }
-        }
-
-        return $towns;
+        return collect($availableTowns)
+            ->filter(fn ($town) => in_array($town->name, $allowedTowns))
+            ->map(fn ($town) => ['id' => $town->id, 'name' => $town->name])
+            ->toArray();
     }
 
     /**
@@ -53,7 +39,11 @@ class PlayerValidationService
      */
     public function getAvailableSexes(): array
     {
-        return config('blacktek.characters.new.sex');
+        $allowedSexes = config('blacktek.characters.new.sex');
+
+        return collect($allowedSexes)
+            ->map(fn ($name, $id) => ['id' => (int) $id, 'name' => $name])
+            ->toArray();
     }
 
     /**
@@ -64,13 +54,8 @@ class PlayerValidationService
         $vocations = app('vocations')->getVocations();
         $allowedVocations = config('blacktek.characters.new.vocations');
 
-        if (! isset($vocations[$vocationId])) {
-            return false;
-        }
-
-        $vocationName = $vocations[$vocationId]->name;
-
-        return in_array($vocationName, $allowedVocations);
+        return isset($vocations[$vocationId]) &&
+            in_array($vocations[$vocationId]->name, $allowedVocations);
     }
 
     /**
@@ -78,16 +63,7 @@ class PlayerValidationService
      */
     public function isValidTown(int $townId): bool
     {
-        $availableTowns = Town::getAvailableTowns();
-        $allowedTowns = config('blacktek.characters.new.towns');
-
-        if (! array_key_exists($townId, $availableTowns)) {
-            return false;
-        }
-
-        $townName = $availableTowns[$townId];
-
-        return in_array($townName, $allowedTowns);
+        return array_key_exists($townId, config('blacktek.characters.new.towns'));
     }
 
     /**
@@ -95,9 +71,7 @@ class PlayerValidationService
      */
     public function isValidSex(int $sex): bool
     {
-        $allowedSexes = array_keys(config('blacktek.characters.new.sex'));
-
-        return in_array($sex, $allowedSexes);
+        return array_key_exists($sex, config('blacktek.characters.new.sex'));
     }
 
     /**
@@ -107,11 +81,9 @@ class PlayerValidationService
     {
         $vocations = app('vocations')->getVocations();
 
-        if (! isset($vocations[$vocationId])) {
-            return __('The selected vocation is invalid.');
-        }
-
-        return __('The selected vocation is not available for new characters.');
+        return isset($vocations[$vocationId])
+            ? __('The selected vocation is not available for new characters.')
+            : __('The selected vocation is invalid.');
     }
 
     /**
@@ -119,20 +91,74 @@ class PlayerValidationService
      */
     public function getTownErrorMessage(int $townId): string
     {
-        $availableTowns = Town::getAvailableTowns();
-
-        if (! array_key_exists($townId, $availableTowns)) {
-            return __('The selected town does not exist.');
-        }
-
         return __('The selected town is not available for new characters.');
     }
 
     /**
-     * Get validation error message for sex
+     * Validate character name
      */
-    public function getSexErrorMessage(): string
+    public function isValidCharacterName(string $name): array
     {
-        return __('The selected sex is invalid.');
+        $errors = [];
+
+        // Length validations
+        if (strlen($name) < 4) {
+            $errors[] = 'The name must be at least 4 characters.';
+        }
+
+        if (strlen($name) > 29) {
+            $errors[] = 'The name must be at most 29 characters.';
+        }
+
+        // First letter must be uppercase
+        if (! empty($name) && ! ctype_upper($name[0])) {
+            $errors[] = 'The first letter of a name has to be a capital letter.';
+        }
+
+        // Only letters and spaces allowed
+        if (! preg_match('/^[a-zA-Z ]+$/', $name)) {
+            $errors[] = 'This name contains invalid letters. Please use only A-Z, a-z, and space.';
+        }
+
+        // No multiple consecutive spaces
+        if (preg_match('/\s{2,}/', $name)) {
+            $errors[] = 'This name contains more than one space between words. Please use only one space between words.';
+        }
+
+        // Must contain at least one vowel
+        if (! preg_match('/[aeiou]/i', $name)) {
+            $errors[] = 'This name contains a word without vowels. Please choose another name.';
+        }
+
+        // Word-specific validations
+        $words = explode(' ', $name);
+        foreach ($words as $word) {
+            if (strlen($word) > 14) {
+                $errors[] = 'This name contains a word that is too long. Please use no more than 14 letters for each word.';
+                break;
+            }
+
+            if (strlen($word) < 2) {
+                $errors[] = 'This name contains a word that is too short. Please use at least 2 letters for each word.';
+                break;
+            }
+
+            if (! preg_match('/[aeiou]/i', $word)) {
+                $errors[] = 'This name contains a word without vowels. Please choose another name.';
+                break;
+            }
+
+            if (in_array(strtolower($word), config('blacktek.characters.new.blocked_words'))) {
+                $errors[] = 'This name cannot be used because it contains a forbidden word or combination of letters. Please choose another name!';
+                break;
+            }
+        }
+
+        // Check full name against blocked words
+        if (in_array(strtolower($name), config('blacktek.characters.new.blocked_words'))) {
+            $errors[] = 'This name cannot be used because it contains a forbidden word or combination of letters. Please choose another name!';
+        }
+
+        return $errors;
     }
 }

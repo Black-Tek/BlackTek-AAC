@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\PlayerValidationService;
 use App\Services\VocationService;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +13,6 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerSingleton(VocationService::class, 'vocations');
-        $this->registerSingleton(PlayerValidationService::class, 'player.validation');
     }
 
     /**

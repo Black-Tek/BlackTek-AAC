@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests\Settings;
 
-use App\Rules\ValidCharacterName;
-use App\Rules\ValidPlayerSex;
-use App\Rules\ValidTown;
-use App\Rules\ValidVocation;
+use App\Rules\ValidPlayerData;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -30,23 +27,23 @@ class CharacterCreateRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                new ValidCharacterName,
+                new ValidPlayerData,
                 Rule::unique('players', 'name'),
             ],
             'sex' => [
                 'required',
                 'integer',
-                new ValidPlayerSex,
+                new ValidPlayerData,
             ],
             'vocation' => [
                 'required',
                 'integer',
-                new ValidVocation,
+                new ValidPlayerData,
             ],
             'town_id' => [
                 'required',
                 'integer',
-                new ValidTown,
+                new ValidPlayerData,
             ],
         ];
     }
@@ -59,7 +56,7 @@ class CharacterCreateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Character name is required.',
+            'name.required' => 'Please enter a character name.',
             'name.unique' => 'This character name is already taken.',
             'sex.required' => 'Please select a sex for your character.',
             'sex.integer' => 'Invalid sex selection.',

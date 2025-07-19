@@ -11,6 +11,18 @@ use App\Models\Account;
 */
 
 /**
+ * Get the current server root path
+ *
+ * @return string
+ */
+if (! function_exists('server_root')) {
+    function server_root()
+    {
+        return config('blacktek.server_root');
+    }
+}
+
+/**
  * Get the current authenticated user's account
  *
  * @return Account

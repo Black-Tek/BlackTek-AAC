@@ -47,6 +47,13 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'flash' => [
+                'success' => fn () => $request->session()->get('flash.success'),
+                'error' => fn () => $request->session()->get('flash.error'),
+                'info' => fn () => $request->session()->get('flash.info'),
+                'warning' => fn () => $request->session()->get('flash.warning'),
+                'message' => fn () => $request->session()->get('flash.message'),
+            ],
         ];
     }
 }
