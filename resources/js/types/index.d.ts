@@ -44,3 +44,13 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface NewsItem {
+    id: number;
+    title: string;
+    content: string;
+    published_at: string;
+    is_published: boolean;
+    created_at: string;
+    updated_at: string;
+}
