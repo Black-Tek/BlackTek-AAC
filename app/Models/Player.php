@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
@@ -30,6 +31,13 @@ class Player extends Model
     ];
 
     protected $appends = ['outfit_image_url', 'sex_name', 'vocation_name'];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('exclude_account_manager', function (Builder $builder) {
+            $builder->where('account_id', '!=', 1);
+        });
+    }
 
     public function account()
     {

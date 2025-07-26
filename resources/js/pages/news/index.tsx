@@ -22,7 +22,6 @@ export default function Index({ news }: IndexProps) {
                     <div className="mx-auto max-w-4xl">
                         {news.map((item) => (
                             <article className="mb-12 border-b border-zinc-200 pb-8 last:border-b-0 dark:border-zinc-700" key={item.id}>
-                                {/* Article header */}
                                 <header className="mb-8 pb-8">
                                     <div className="mb-4">
                                         <time className="text-sm text-zinc-500 dark:text-zinc-400" dateTime={item.published_at}>
@@ -38,7 +37,6 @@ export default function Index({ news }: IndexProps) {
                                     </Link>
                                 </header>
 
-                                {/* Article preview */}
                                 <div className="prose prose-lg dark:prose-invert max-w-none">
                                     <div className="leading-relaxed text-zinc-600 dark:text-zinc-300">
                                         {item.content.length > 300 ? (

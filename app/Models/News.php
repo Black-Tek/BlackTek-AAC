@@ -25,7 +25,7 @@ class News extends Model
     #[Scope]
     protected function published(Builder $query): void
     {
-        $query->whereNotNull('published_at')
+        $query->where('is_published', true)
             ->where('published_at', '<=', now())
             ->orderBy('published_at', 'desc');
     }

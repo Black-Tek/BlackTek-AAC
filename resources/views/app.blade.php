@@ -38,7 +38,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=Montserrat:400,500,600" rel="stylesheet" />
 
     {{-- Optimize outfit images loading --}}
     <link rel="preconnect" href="https://outfit-images.ots.me">

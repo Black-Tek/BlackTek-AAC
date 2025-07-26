@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,4 +54,18 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('auth/complete', [SocialiteController::class, 'showCompleteForm'])
+        ->name('auth.socialite.complete');
+
+    Route::post('auth/complete', [SocialiteController::class, 'complete'])
+        ->name('auth.socialite.complete.store');
+
+    Route::get('auth/{provider}', [SocialiteController::class, 'redirect'])
+        ->name('auth.socialite.redirect');
+
+    Route::get('auth/{provider}/callback', [SocialiteController::class, 'callback'])
+        ->name('auth.socialite.callback');
 });

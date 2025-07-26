@@ -23,6 +23,23 @@ class VocationService
     }
 
     /**
+     * Get all vocations as a collection
+     */
+    public function getAllVocations(): array
+    {
+        $vocations = $this->getVocations();
+        $available = [];
+
+        foreach ($vocations as $vocation) {
+            if (isset($vocation->id) && isset($vocation->name)) {
+                $available[$vocation->id] = $vocation->name;
+            }
+        }
+
+        return $available;
+    }
+
+    /**
      * Get vocation names indexed by ID
      */
     public function getVocationNames(): array

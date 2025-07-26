@@ -23,9 +23,7 @@ export default function Show({ news }: ShowProps) {
             <Head title={news.title} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="pt-12">
-                    {/* Article content */}
                     <article className="mx-auto max-w-4xl">
-                        {/* Article header */}
                         <header className="mb-8 pb-8">
                             <div className="mb-4">
                                 <time className="text-sm text-zinc-500 dark:text-zinc-400" dateTime={news.published_at}>
@@ -41,7 +39,6 @@ export default function Show({ news }: ShowProps) {
                             <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-white">{news.title}</h1>
                         </header>
 
-                        {/* Article body */}
                         <div className="prose prose-lg dark:prose-invert max-w-none">
                             <div
                                 className="leading-relaxed whitespace-pre-wrap text-gray-600 dark:text-gray-300"
@@ -49,7 +46,6 @@ export default function Show({ news }: ShowProps) {
                             />
                         </div>
 
-                        {/* Article footer */}
                         <footer className="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-700">
                             <div className="flex items-center justify-between">
                                 <div className="text-sm text-zinc-500 dark:text-zinc-400">
