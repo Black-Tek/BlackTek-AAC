@@ -122,13 +122,13 @@ An opinionated AAC for Black Tek Server, built with Laravel 12, using React as f
    npm install && npm run build
    ```
 5. Rename environment file and configure:
-  - Remove the ``example`` so that it's left with the name as only ``.env`` (Note: You may need to enable viewing of file extensions to do be able to do so)
--   Edit `.env` to set MySQL database credentials and other settings
---  **BLACKTEK_SERVER_ROOT** (path for the BlackTek Server)
--- **DB_USERNAME** (Mysql username)
---**DB_PASSWORD**  (Mysql password)
--- **DB_PORT** (Mysql port)
--- **DB_HOST** (Mysql host ip : Can be 127.0.0.1 for local)
+ Remove the ``example`` so that it's left with the name as only ``.env`` (Note: You may need to enable viewing of file extensions to do be able to do so)
+ Edit `.env` to set MySQL database credentials and other settings
+- **BLACKTEK_SERVER_ROOT** (path for the BlackTek Server)
+- **DB_USERNAME** (Mysql username)
+- **DB_PASSWORD**  (Mysql password)
+- **DB_PORT** (Mysql port)
+- **DB_HOST** (Mysql host ip : Can be 127.0.0.1 for local)
    (Please note: If you change from using local host for your webserver, you will need to also change 127.0.0.1 in some settings in this file as well)
 6. Generate application key:
    If you are still in the terminal in the projects path you can run the following command (if not, get there)
